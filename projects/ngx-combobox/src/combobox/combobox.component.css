@@ -1,0 +1,127 @@
+.ngx-combobox-container {
+  position: relative;
+  display: inline-block;
+  width: var(--ngx-combobox-container-width);
+  font-family: var(--ngx-combobox-font-family);
+  font-size: var(--ngx-combobox-font-size);
+  color: var(--ngx-combobox-container-color);
+  background-color: var(--ngx-combobox-container-background-color);
+  border: var(--ngx-combobox-container-border);
+  border-radius: var(--ngx-combobox-container-border-radius);
+  box-shadow: var(--ngx-combobox-container-box-shadow);
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+  z-index: 5;
+}
+
+.ngx-combobox-container-select {
+  position: fixed;
+  display: inline-block;
+  width: var(--ngx-combobox-container-width);
+  height: var(--ngx-combobox-container-height);
+  font-family: var(--ngx-combobox-font-family);
+  font-size: var(--ngx-combobox-font-size);
+  color: var(--ngx-combobox-container-color);
+  background-color: var(--ngx-combobox-container-background-color);
+  border: var(--ngx-combobox-container-border);
+  border-radius: var(--ngx-combobox-container-border-radius);
+  box-shadow: var(--ngx-combobox-container-box-shadow);
+  cursor: pointer;
+  user-select: none;
+  overflow: auto;
+  transition: border-color 0.2s ease;
+  z-index: 5;
+}
+
+.ngx-combobox-container:hover {
+  border-color: var(--ngx-combobox-container-hover-border-color);
+}
+
+.ngx-combobox::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.ngx-combobox::-webkit-scrollbar:vertical {
+  width: var(--ngx-combobox-scrollbar-vertical-width);
+}
+
+.ngx-combobox::-webkit-scrollbar:horizontal {
+  height: var(--ngx-combobox-scrollbar-horizontal-height);
+}
+
+.ngx-combobox::-webkit-scrollbar-thumb {
+  background-color: var(--ngx-combobox-scrollbar-thumb-background-color);
+  border-radius: var(--ngx-combobox-scrollbar-thumb-border-radius);
+  border: var(--ngx-combobox-scrollbar-thumb-border);
+}
+
+.ngx-combobox::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ngx-combobox-scrollbar-thumb-hover-background-color);
+}
+
+.ngx-combobox::-webkit-scrollbar-track {
+  border-radius: var(--ngx-combobox-scrollbar-track-border-radius);
+  background-color: var(--ngx-combobox-scrollbar-track-background-color);
+}
+
+.ngx-combobox::-webkit-scrollbar-track:hover {
+  background-color: var(--ngx-combobox-scrollbar-track-hover-background-color);
+}
+
+.ngx-combobox::-webkit-scrollbar-button {
+  display: none;
+}
+
+.ngx-combobox::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.ngx-combobox-input-container {
+  position: relative;
+}
+
+.ngx-combobox-input-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: var(--ngx-combobox-arrow-color);
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 6;
+}
+
+.ngx-combobox-input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: var(--ngx-combobox-font-size);
+  color: var(--ngx-combobox-container-color);
+}
+
+.ngx-combobox-option:hover {
+  background-color: var(--ngx-combobox-option-hover-background-color);
+}
+
+.is-required {
+  color: #ff0000;
+  position: fixed;
+  display: inline-block;
+  font-size: var(--ngx-combobox-font-size);
+  background-color: var(--ngx-combobox-is-required-background-color);
+  box-shadow: var(--ngx-combobox-is-required-box-shadow);
+  transition: border-color 0.2s ease;
+  padding: var(--ngx-combobox-is-required-padding);
+  font-weight: var(--ngx-combobox-is-required-font-weight);
+  border-radius: var(--ngx-combobox-is-required-border-radius);
+  margin-top: var(--ngx-combobox-is-required-margin-top);
+  z-index: 1;
+}

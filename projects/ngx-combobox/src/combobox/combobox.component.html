@@ -1,0 +1,33 @@
+<form [formGroup]="currentForm">
+  <div [ngClass]="containerClassList" (click)="clickInput()">
+    <input
+      type="text"
+      [ngClass]="inputClassList"
+      [placeholder]="placeholder"
+      (keyup)="filterList($event)"
+      (click)="clickInput()"
+      [value]="currentForm.get('input')?.value"
+      formControlName="input"
+    />
+    <select
+      (change)="setOptionSelected($event)"
+      [ngClass]="selectClassList"
+      *ngIf="isVisibleList"
+      multiple
+    >
+      <option
+        [ngClass]="optionClassList"
+        *ngFor="let item of dataListFiltered"
+        [value]="item[key]"
+        [disabled]="item.disabled || false"
+      >
+        {{ buildValue(item) }}
+      </option>
+    </select>
+    <span
+      *ngIf="currentForm.get('input')?.touched && currentForm.get('input')?.errors?.['required']"
+      [ngClass]="spanClassList"
+      >{{ requiredMessage }}</span
+    >
+  </div>
+</form>
