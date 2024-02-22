@@ -1,6 +1,6 @@
 {
   "name": "ngx-combobox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Angular combobox component",
   "peerDependencies": {
     "@angular/common": "^16.2.0",

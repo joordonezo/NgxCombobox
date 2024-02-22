@@ -28,7 +28,7 @@ First of all, make **ngx-combobox** globally available to your Angular applicati
 `ComboboxModule` the your root Angular module. For example:
 
 ```typescript
-import { ComboboxModule} from '@joordonezo/ngx-combobox';
+import { ComboboxModule} from 'ngx-combobox';
 
 @NgModule({
   imports: [ComboboxModule],
@@ -39,7 +39,7 @@ export class AppModule {}
 You need to export the styles if you wish to do so from the `angular.json` using the style array like this.
 ```json
 "styles": [
-	"node_modules/@joordonezo/ngx-combobox/src/assets/css/ngx-combobox.css",
+	"node_modules/ngx-combobox/src/assets/css/ngx-combobox.css",
 	"src/styles.css"
 ],
 ```
