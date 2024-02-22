@@ -1,7 +1,7 @@
 # NgxCombobox
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
 ## Demo
-You can play around with this library with [playground](https://stackblitzstarters5cvw1j-jcqj-7vsvwb6m--4200--a9c8a5a3.local-credentialless.webcontainer.io).
+You can play around with this library with [playground](https://stackblitz.com/~/github.com/joordonezo/stackblitz-starters-5cvw1j).
 ## How to install
 
 You can get **ngx-combobox** via **npm** by either adding it as a new _dependency_ to your `package.json` file and running `npm install`,
