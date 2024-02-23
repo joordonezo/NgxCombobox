@@ -1,5 +1,5 @@
 # NgxCombobox
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+This library was generated for you use.
 ## Demo
 You can play around with this library with [playground](https://stackblitz.com/~/github.com/joordonezo/stackblitz-starters-5cvw1j).
 ## How to install
@@ -17,6 +17,7 @@ The following list describes the compatibility with Angular:
 | NgxCombobox | Angular|
 | ---------------- | ------- |
 | `1.x`            | `16.x`  |
+| `2.x`            | `17.x`  |
 ## How to setup
 
 Before actually being able to use the **ngx-combobox** library within our code, we have to first set it up within Angular, and also
