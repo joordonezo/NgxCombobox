@@ -1,12 +1,29 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'live-ngx-combobox';
+  public currentForm: FormGroup = this.fb.group({
+    inputText: ['', []],
+  });
+
+  constructor(private fb: FormBuilder) {}
+
+  public returnProperties = {};
+
+  public propertiesReturn = ['id', 'name', 'lastName'];
+
+  public namesValue = ['name', 'lastName'];
+
+  public print(valueOutput: any) {
+    this.returnProperties = valueOutput;
+    console.log(valueOutput);
+  }
   public dataList = [
     { id: 1, name: 'Luis', lastName: 'Perez', age: 25 },
     { id: 2, name: 'Maria', lastName: 'Gomez', age: 30 },
@@ -117,14 +134,6 @@ export class AppComponent {
     { id: 107, name: 'Diego', lastName: 'Rojas', age: 27 },
     { id: 108, name: 'Lucia', lastName: 'Flores', age: 32 },
     { id: 109, name: 'Ismael', lastName: 'Gomez', age: 37 },
-    { id: 110, name: 'Adriana', lastName: 'Diaz', age: 42 }
+    { id: 110, name: 'Adriana', lastName: 'Diaz', age: 42 },
   ];
-
-  public propertiesReturn = ['id', 'name', 'lastName'];
-
-  public namesValue = ['name', 'lastName'];
-
-  public print(event: any) {
-    console.log(event);
-  }
 }

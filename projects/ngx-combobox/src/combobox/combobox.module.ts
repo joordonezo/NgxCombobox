@@ -1,20 +1,11 @@
-import { NgModule } from '@angular/core';
+import { NgModule, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComboboxComponent } from './combobox.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
-  declarations: [
-    ComboboxComponent
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-    ComboboxComponent
-  ]
+  declarations: [ComboboxComponent],
+  imports: [CommonModule, ReactiveFormsModule],
+  exports: [ComboboxComponent]
 })
-export class ComboboxModule { }
+export class ComboboxModule {}

@@ -17,7 +17,7 @@
 }
 
 .ngx-combobox-container-select {
-  position: fixed;
+  position: absolute;
   display: inline-block;
   width: var(--ngx-combobox-container-width);
   height: var(--ngx-combobox-container-height);
@@ -113,7 +113,7 @@
 
 .is-required {
   color: #ff0000;
-  position: fixed;
+  position: absolute;
   display: inline-block;
   font-size: var(--ngx-combobox-font-size);
   background-color: var(--ngx-combobox-is-required-background-color);

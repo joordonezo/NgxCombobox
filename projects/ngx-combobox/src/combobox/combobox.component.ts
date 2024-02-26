@@ -1,16 +1,33 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  forwardRef,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormBuilder,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'ngx-combobox',
   templateUrl: './combobox.component.html',
   styleUrls: ['./combobox.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: forwardRef(() => ComboboxComponent),
+    },
+  ],
 })
-export class ComboboxComponent implements OnInit {
-  public currentForm: FormGroup = this.fb.group({
-    input: ['', []],
-  });
-
+export class ComboboxComponent implements OnInit, ControlValueAccessor {
+  public currentForm!: FormGroup;
   public isVisibleList: boolean = false;
   public dataListFiltered: any[] = [];
   @Input() public dataList!: any[];
@@ -26,11 +43,48 @@ export class ComboboxComponent implements OnInit {
   @Input() public selectClassList?: string[];
   @Input() public optionClassList?: string[];
   @Input() public spanClassList?: string[];
+  @Input() public defaultSelected?: any;
+  @Input() public disabled: boolean = false;
+  @Input() public returnValueInputText?: string = '';
   @Output() public returnValue: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.currentForm = this.fb.group({
+      input: [{ value: '', disabled: false }, []],
+    });
+  }
+  private onChange!: (value: any) => void;
+  private onTouched!: () => void;
+
+  public inputTextWrited!: string;
+
+  writeValue(value: string): void {
+    this.inputTextWrited = value;
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  public onInputTextChanged(): void {
+    this.onChange(this.currentForm.get('input')?.value);
+  }
+
+  public onBlur(): void {
+    this.onTouched();
+  }
 
   ngOnInit(): void {
+    if (this.disabled) {
+      this.currentForm.get('input')?.disable();
+    } else {
+      this.currentForm.get('input')?.enable();
+    }
+
     this.containerClassList = [
       'ngx-combobox-input-container',
       ...(this.containerClassList || []),
@@ -52,10 +106,22 @@ export class ComboboxComponent implements OnInit {
     ];
     this.spanClassList = ['is-required', ...(this.spanClassList || [])];
 
+    if (this.defaultSelected && this.defaultSelected != '') {
+      let eventMock = {
+        target: {
+          value: this.defaultSelected,
+        },
+      };
+      this.setOptionSelected(eventMock);
+    }
+
     if (this.required) {
       this.currentForm.get('input')?.setValidators(Validators.required);
       this.currentForm.get('input')?.updateValueAndValidity();
     }
+    setTimeout(() => {
+      this.onInputTextChanged();
+    }, 0);
   }
 
   clickInput() {
@@ -71,6 +137,9 @@ export class ComboboxComponent implements OnInit {
     this.currentForm.patchValue({
       input: htmlElement.textContent,
     });
+    setTimeout(() => {
+      this.onInputTextChanged();
+    }, 0);
 
     let element = this.dataList.find(
       (element: any) => element[this.key] == htmlElement.value
@@ -95,6 +164,7 @@ export class ComboboxComponent implements OnInit {
 
   filterList(event: any): void {
     let valueInput = event.target.value;
+    this.onInputTextChanged();
     if (valueInput.length > 0 && this.dataList) {
       this.dataListFiltered = this.dataList.filter((element: any) =>
         this.buildValue(element)
@@ -103,6 +173,8 @@ export class ComboboxComponent implements OnInit {
       );
       if (this.dataListFiltered.length > 0) {
         this.isVisibleList = true;
+      } else {
+        this.isVisibleList = false;
       }
     } else {
       this.isVisibleList = false;

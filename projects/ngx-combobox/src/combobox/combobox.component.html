@@ -8,18 +8,20 @@
       (click)="clickInput()"
       [value]="currentForm.get('input')?.value"
       formControlName="input"
+      (blur)="onBlur()"
+      [disabled]="currentForm.get('input')?.disabled || disabled"
     />
     <select
       (change)="setOptionSelected($event)"
       [ngClass]="selectClassList"
       *ngIf="isVisibleList"
       multiple
+      [disabled]="currentForm.get('input')?.disabled"
     >
       <option
         [ngClass]="optionClassList"
         *ngFor="let item of dataListFiltered"
         [value]="item[key]"
-        [disabled]="item.disabled || false"
       >
         {{ buildValue(item) }}
       </option>
