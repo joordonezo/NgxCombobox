@@ -94,7 +94,7 @@
   border-top: var(--ngx-combobox-arrow-color);
   transform: translateY(-50%);
   cursor: pointer;
-  z-index: 6;
+  z-index: 4;
 }
 
 .ngx-combobox-input {

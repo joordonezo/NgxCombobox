@@ -6,17 +6,16 @@
       [placeholder]="placeholder"
       (keyup)="filterList($event)"
       (click)="clickInput()"
-      [value]="currentForm.get('input')?.value"
-      formControlName="input"
       (blur)="onBlur()"
-      [disabled]="currentForm.get('input')?.disabled || disabled"
+      formControlName="input"
     />
     <select
       (change)="setOptionSelected($event)"
+      (mousedown)="handleOverlayClick($event)"
       [ngClass]="selectClassList"
       *ngIf="isVisibleList"
       multiple
-      [disabled]="currentForm.get('input')?.disabled"
+      formControlName="select"
     >
       <option
         [ngClass]="optionClassList"

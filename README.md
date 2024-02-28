@@ -1,7 +1,7 @@
 # NgxCombobox
 This library was generated for you use.
 ## Demo
-You can play around with this library with [playground](https://stackblitz.com/~/github.com/joordonezo/stackblitz-starters-5cvw1j){:target="_blank"}.
+You can play around with this library with [playground](https://stackblitz.com/~/github.com/joordonezo/stackblitz-starters-5cvw1j){target="_blank"}.
 ## How to install
 
 You can get **ngx-combobox** via **npm** by either adding it as a new _dependency_ to your `package.json` file and running `npm install`,
@@ -98,7 +98,6 @@ Use the `ngx-combobox` component in this way.
     [optionClassList]="['cssClass4']"
     [spanClassList]="['cssClass5']"
     [defaultSelected]="2"
-    [disabled]="false"
 ></ngx-combobox>
 ```
 If you need use `ReactiveForms` then use this form
@@ -120,7 +119,6 @@ If you need use `ReactiveForms` then use this form
     [optionClassList]="['cssClass4']"
     [spanClassList]="['cssClass5']"
     [defaultSelected]="2"
-    [disabled]="false"
     formControlName="inputText"
   ></ngx-combobox>
 </form>
@@ -129,11 +127,18 @@ If you need use `ReactiveForms` then use this form
 Use the `ngx-combobox` component in this way.
 ```typescript
 export class AppComponent {
+  public disabledInput: boolean = false;
   public currentForm: FormGroup = this.fb.group({
-    inputText: ['', []],
+    inputText: [{ value: '', disabled: false }, []],
   });
 
   constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.currentForm.patchValue({
+      inputText: 'No se aplicará si se encuentra <defaultSelected>',
+    });
+  }
 
   public returnProperties = {};
 
@@ -145,11 +150,21 @@ export class AppComponent {
     this.returnProperties = valueOutput;
     console.log(valueOutput);
   }
+
+  public disabled() {
+    if (this.disabledInput) {
+      this.currentForm.disable();
+    } else {
+      this.currentForm.enable();
+    }
+    this.disabledInput = !this.disabledInput;
+  }
+
   public dataList = [
     { id: 1, name: 'Luis', lastName: 'Perez', age: 25 },
     { id: 2, name: 'Maria', lastName: 'Gomez', age: 30 },
     { id: 3, name: 'Juan', lastName: 'Gonzalez', age: 35 },
-	];
+  ];
 }
 ```
 ## Some Configurations
@@ -172,9 +187,4 @@ All properties that can you modify and whitch are requeried or optional.
 | `optionClassList`    | false   | array   |                              |
 | `spanClassList`      | false   | array   |                              |
 | `defaultSelected`    | false   | any     |matches the given key         |
-| `disabled`           | false   | boolean |   `false`                    |
-| `formControlName`    | false   | string  |                              |
-
-
-
-
+| `formControlName`    | false   | string  |Excluide by `defaultSelected` |

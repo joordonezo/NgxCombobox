@@ -15,7 +15,6 @@
     [optionClassList]="['cssClass4']"
     [spanClassList]="['cssClass5']"
     [defaultSelected]="2"
-    [disabled]="false"
     formControlName="inputText"
   ></ngx-combobox>
   <!--una pagina ejemplo cualqueira-->
@@ -29,5 +28,12 @@
     <p>
       <code>{{ currentForm.value | json }}</code>
     </p>
+    <button
+      (click)="disabled()"
+      [style.background-color]="disabledInput ? 'green' : 'red'"
+      [style.color]="'white'"
+    >
+      {{ disabledInput ? "Disable" : "Enable" }}
+    </button>
   </div>
 </form>

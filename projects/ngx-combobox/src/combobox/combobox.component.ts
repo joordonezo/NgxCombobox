@@ -22,14 +22,11 @@ import {
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: forwardRef(() => ComboboxComponent),
+      useExisting: ComboboxComponent,
     },
   ],
 })
 export class ComboboxComponent implements OnInit, ControlValueAccessor {
-  public currentForm!: FormGroup;
-  public isVisibleList: boolean = false;
-  public dataListFiltered: any[] = [];
   @Input() public dataList!: any[];
   @Input() public key!: string;
   @Input() public namesValue!: string[];
@@ -44,22 +41,26 @@ export class ComboboxComponent implements OnInit, ControlValueAccessor {
   @Input() public optionClassList?: string[];
   @Input() public spanClassList?: string[];
   @Input() public defaultSelected?: any;
-  @Input() public disabled: boolean = false;
   @Input() public returnValueInputText?: string = '';
   @Output() public returnValue: EventEmitter<any> = new EventEmitter<any>();
 
+  public currentForm!: FormGroup;
+  public isVisibleList: boolean = false;
+  public dataListFiltered: any[] = [];
+  public onChange: any = () => {};
+  public onTouched: Function = () => {};
+  public isSelectClicked: boolean = false;
+  public isDisabled: boolean = false;
+
   constructor(private fb: FormBuilder) {
     this.currentForm = this.fb.group({
-      input: [{ value: '', disabled: false }, []],
+      input: ['', []],
+      select: ['', []],
     });
   }
-  private onChange!: (value: any) => void;
-  private onTouched!: () => void;
-
-  public inputTextWrited!: string;
 
   writeValue(value: string): void {
-    this.inputTextWrited = value;
+    if (!this.defaultSelected) this.currentForm.patchValue({ input: value });
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -75,14 +76,32 @@ export class ComboboxComponent implements OnInit, ControlValueAccessor {
   }
 
   public onBlur(): void {
-    this.onTouched();
+    if (!this.isSelectClicked) {
+      this.isVisibleList = false;
+      this.onTouched();
+    }
+    this.isSelectClicked = false;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled;
+    if (this.isDisabled) {
+      this.currentForm.disable();
+    } else {
+      this.currentForm.enable();
+    }
+  }
+
+  handleOverlayClick(event: MouseEvent) {
+    this.isSelectClicked = true;
+    event.stopPropagation();
   }
 
   ngOnInit(): void {
-    if (this.disabled) {
-      this.currentForm.get('input')?.disable();
+    if (this.isDisabled) {
+      this.currentForm.disable();
     } else {
-      this.currentForm.get('input')?.enable();
+      this.currentForm.enable();
     }
 
     this.containerClassList = [
@@ -119,9 +138,6 @@ export class ComboboxComponent implements OnInit, ControlValueAccessor {
       this.currentForm.get('input')?.setValidators(Validators.required);
       this.currentForm.get('input')?.updateValueAndValidity();
     }
-    setTimeout(() => {
-      this.onInputTextChanged();
-    }, 0);
   }
 
   clickInput() {
@@ -131,22 +147,25 @@ export class ComboboxComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  setOptionSelected(event: any): void {
-    let htmlElement = event.target;
-
-    this.currentForm.patchValue({
-      input: htmlElement.textContent,
-    });
-    setTimeout(() => {
-      this.onInputTextChanged();
-    }, 0);
-
+  setOptionSelected(event: Event | any): void {
+    let htmlElement =
+      event instanceof Event
+        ? (event.target as HTMLSelectElement)
+        : event.target;
+    let id =
+      typeof htmlElement.value === 'number'
+        ? htmlElement.value
+        : htmlElement.value.toString().split(':')[1].trim();
+    let textNode =
+      typeof htmlElement.value === 'number'
+        ? ''
+        : htmlElement.options[htmlElement.selectedIndex].text;
     let element = this.dataList.find(
-      (element: any) => element[this.key] == htmlElement.value
+      (element: any) => element[this.key] == Number(id)
     ) as any;
 
     this.currentForm.patchValue({
-      input: this.buildValue(element),
+      input: element ? this.buildValue(element) : textNode,
     });
 
     this.isVisibleList = false;
@@ -160,11 +179,11 @@ export class ComboboxComponent implements OnInit, ControlValueAccessor {
     } else {
       this.returnValue.emit(element);
     }
+    this.onInputTextChanged();
   }
 
   filterList(event: any): void {
     let valueInput = event.target.value;
-    this.onInputTextChanged();
     if (valueInput.length > 0 && this.dataList) {
       this.dataListFiltered = this.dataList.filter((element: any) =>
         this.buildValue(element)
@@ -179,9 +198,10 @@ export class ComboboxComponent implements OnInit, ControlValueAccessor {
     } else {
       this.isVisibleList = false;
     }
+    this.onInputTextChanged();
   }
 
-  public buildValue(element: any): String {
+  public buildValue(element: any): string {
     let value = '';
     if (this.namesValue) {
       this.namesValue.forEach((property: any, i) => {
